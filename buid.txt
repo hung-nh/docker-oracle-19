@@ -1,0 +1,39 @@
+Tải file này về https://drive.google.com/file/d/1wiZv6vt_QtB63pCmW5eWM1umeHXtTD-M/view?usp=sharing
+nhét vòa thư mực 19.3.0 rồi run các lệnh bên dưới
+
+sudo chown -R 54321:54322 /oradata
+sudo chmod 777 /oradata
+
+./buildContainerImage.sh -v 19.3.0 -s
+
+docker run \
+--name oracle19c \
+-p 1521:1521 \
+-p 5500:5500 \
+-e ORACLE_SID=orcl \
+-e ORACLE_PDB=orcldb_e_wallet \
+-e ORACLE_PWD=ADda0cfca4d5@c \
+-e INIT_SGA_SIZE=3000 \
+-e INIT_PGA_SIZE=1000 \
+-v ~/Desktop/projects/docker-images/OracleDatabase/oradata:/opt/oracle/oradata \
+oracle/database:19.3.0-se2
+
+create user E_WALLET identified by Password123$;
+
+alter user E_WALLET identified by Password123$
+    default tablespace SYSTEM;
+
+GRANT CREATE SESSION TO E_WALLET;
+
+alter session set "_ORACLE_SCRIPT"=true;
+
+alter user E_WALLET quota unlimited on system;
+
+grant all privileges to E_WALLET;
+
+
+create user E_WALLET identified by Password123$;
+GRANT CREATE SESSION TO E_WALLET;
+alter session set "_ORACLE_SCRIPT"=true;
+alter user E_WALLET quota unlimited on system;
+grant all privileges to E_WALLET;

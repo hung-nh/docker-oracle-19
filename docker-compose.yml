@@ -1,0 +1,16 @@
+version: '2'
+services:
+  oracle_db:
+    image: oracle/database:19.3.0-se2
+    volumes:
+      - ./oradata:/opt/oracle/oradata # persistent oracle database data.
+    environment:
+      - ORACLE_SID:orcl
+      - ORACLE_PDB:orcl_e_wallet
+      - ORACLE_PWD:da0cfca4d5@c
+      - INIT_SGA_SIZE:3000
+      - INIT_PGA_SIZE:1000
+    ports:
+      - 1521:1521
+      - 8080:8080
+      - 5500:5500
